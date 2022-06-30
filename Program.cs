@@ -1,7 +1,14 @@
+
+using WebApplication1.Abstraction;
+using WebApplication1.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IStudent_Helper, Student_Helper>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
