@@ -3,7 +3,7 @@ using WebApplication1.Abstraction;
 using WebApplication1.Exceptions;
 using WebApplication1.Model;
 
-namespace WebApplication2.Abstraction;
+namespace WebApplication1.Service;
 
 public class StudentHelper1 : IStudentHelper  
 {
@@ -107,13 +107,7 @@ public class StudentHelper1 : IStudentHelper
         else
             throw new StudentNotFoundException("No student with the given ID!");
         return students;
-        /*foreach (var s in students)
-        {
-            if (s.id == sId)
-            {
-                students.Remove(s);
-            }
-        }*/
+       
     }
 
 
