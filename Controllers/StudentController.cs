@@ -1,59 +1,78 @@
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Abstraction;
 using WebApplication1.Model;
-using WebApplication1.Service;
+using WebApplication1.Model;
 
-namespace WebApplication1.Controllers;
+namespace WebApplication2.Controllers;
+
 [ApiController]
 [Route("[controller]")]
-public class StudentController : ControllerBase
+
+public class StudentsController : ControllerBase
 {
-    private readonly IStudent_Helper _helper;    
-    public StudentController(IStudent_Helper studentHelper)
-    {
-        _helper = studentHelper;
-    } 
-    private static readonly List<Student> students = new List<Student>();
+    private readonly IStudentHelper _helper;
     
-    [HttpGet("first")]
-    public IEnumerable<Student> Getstudents()
+    public StudentsController(IStudentHelper sHelper)
     {
-        return students;
-    }
-    [HttpPost("PostAdd")]
-    public IEnumerable<Student> Postudents([FromBody] Student s)
-    {
-        students.Add(s);
-        return Getstudents();
+        _helper = sHelper;
     }
     
-    [HttpGet("{id:int}")]
-    public Student Getstudentbyid([FromRoute]int id)
-    {
-        return _helper.Getstudentbyid(students,id);
-    }
-    [HttpGet("names/{name}")]
-
-    public IEnumerable<Student> Getstudentbyname([FromQuery] String name)
+    private static readonly List<Student> StudentList = new List<Student>()
     {
 
-         return _helper.Getstudentbyname(students,name);
-    }
-    [HttpGet("language/{language}")]
-    public String GetEndpoint([FromRoute]String language)
+    };
+
+    [HttpGet()]
+    public async Task<List<Student>> GetStudents()
     {
-        return _helper.GetDate(language);
+        return StudentList;
     }
     
-    [HttpPost("name/{name},id/{id}")]
-    public List<Student> UpdateStudentName([FromRoute] int id,String name)
+    [HttpGet()]
+    [Route("{id:int}")]
+    public async Task<Student> GetStudentById([FromRoute] int id)
     {
-        return _helper.UpdateStudentName(students, id, name);
+        return _helper.GetStudentById(StudentList,id);
     }
-    [HttpDelete("id/{id}")]
-    public List<Student> DeleteStudent([FromBody]int id)
+    
+    [HttpGet("search")]
+    public async Task<Student> GetStudentByName([FromQuery] string name)
     {
-        return _helper.DeleteStudent(students, id);
+        return _helper.GetStudentByName(StudentList,name);
+    }
+    
+    [HttpGet("date")]
+    public async Task<string> GetCurrentDate([FromHeader] string acceptedLanguage)
+    {
+        return _helper.GetSpecificDateFormat(acceptedLanguage);
+    }
+    
+    [HttpPost()]
+    public async Task<ActionResult> AddStudent([FromBody] Student s)
+    {
+        StudentList.Add(s);
+        return Ok();
+    }
+    
+    [HttpPost("update")]
+    public async Task<List<Student>> UpdateStudentNameById([FromBody] Student s)
+    {
+        return _helper.UpdateStudentNameById(StudentList, s.id, s.name);
+    }
+    
+    [HttpDelete()]
+    [Route("{id:int}")]
+    public async Task<List<Student>> DeleteStudent([FromRoute] int id)
+    {
+        return _helper.DeleteStudent(StudentList, id);
     }
 
+    [HttpPost("uploadImage")]
+    public async Task<string> UploadImage([FromForm]IFormFile file)
+    {
+        return _helper.UploadImage(file);
+    }
 }

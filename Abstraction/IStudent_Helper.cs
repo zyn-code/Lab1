@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Model;
 
 namespace WebApplication1.Abstraction;
 
-public interface IStudent_Helper
+public interface IStudentHelper
 {
-    public Student Getstudentbyid(List<Student> students, int id); 
-    public List<Student> Getstudentbyname(List<Student> students, string name);
-
-    public string GetDate(string language);
-    public List<Student> UpdateStudentName(List<Student> students, int id, string name);
-    public List<Student> DeleteStudent(List<Student> students, int id);
-
+    public Student GetStudentById(List<Student> students, int id);
+    public Student GetStudentByName(List<Student> students, string sName);
+    public string GetSpecificDateFormat(string acceptedLanguage);
+    public List<Student> UpdateStudentNameById(List<Student> students, long id, string name);
+    public string UploadImage(IFormFile file);
+    public List<Student> DeleteStudent(List<Student> students, int sId);
 }
