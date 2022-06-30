@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Abstraction;
 using WebApplication1.Model;
-using WebApplication1.Model;
 
-namespace WebApplication2.Controllers;
+namespace WebApplication1.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -25,13 +24,13 @@ public class StudentsController : ControllerBase
 
     };
 
-    [HttpGet()]
+    [HttpGet("get")]
     public async Task<List<Student>> GetStudents()
     {
         return StudentList;
     }
     
-    [HttpGet()]
+    [HttpGet("id")]
     [Route("{id:int}")]
     public async Task<Student> GetStudentById([FromRoute] int id)
     {
@@ -50,7 +49,7 @@ public class StudentsController : ControllerBase
         return _helper.GetSpecificDateFormat(acceptedLanguage);
     }
     
-    [HttpPost()]
+    [HttpPost("add")]
     public async Task<ActionResult> AddStudent([FromBody] Student s)
     {
         StudentList.Add(s);
@@ -63,7 +62,7 @@ public class StudentsController : ControllerBase
         return _helper.UpdateStudentNameById(StudentList, s.id, s.name);
     }
     
-    [HttpDelete()]
+    [HttpDelete("delete")]
     [Route("{id:int}")]
     public async Task<List<Student>> DeleteStudent([FromRoute] int id)
     {
