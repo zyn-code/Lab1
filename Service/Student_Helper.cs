@@ -24,7 +24,6 @@ public class StudentHelper1 : IStudentHelper
     
     public Student GetStudentByName(List<Student> students, string sName )
     {
-        //return students.First(obj => obj.name == sName);
         foreach (Student s in students)
         {
             if (s.name == sName)
